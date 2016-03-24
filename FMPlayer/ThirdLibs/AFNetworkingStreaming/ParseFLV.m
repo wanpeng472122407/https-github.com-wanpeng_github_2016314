@@ -185,7 +185,7 @@ uint reverse_bytes (byte *p ,int c) {
     return @"UNKNOWN";
 }
 
-- (NSDictionary *)parseHeaderFLV:(NSData *)flvData {
+- (NSDictionary *)parseHeaderFLVFile:(NSData *)flvData {
     
     NSData* subData = [flvData subdataWithRange:NSMakeRange(0, 3)];
     NSString *strHeader = [[NSString alloc] initWithData:subData encoding:NSUTF8StringEncoding];
@@ -208,7 +208,7 @@ uint reverse_bytes (byte *p ,int c) {
     return dic;
 }
 
-- (NSArray *)parseTagFLV:(NSData *)flvData {
+- (NSArray *)parseTagFLVFile:(NSData *)flvData {
     
     NSData* subData = [flvData subdataWithRange:NSMakeRange(0, 3)];
     NSString *strHeader = [[NSString alloc] initWithData:subData encoding:NSUTF8StringEncoding];
@@ -302,7 +302,7 @@ uint reverse_bytes (byte *p ,int c) {
 }
 
 
-- (void)parseOnMetaData:(NSData *)flvdata complete:(void (^)(NSArray *))complete error:(void (^)(NSString * str))error {
+- (void)parseFLVFileMetaData:(NSData *)flvdata complete:(void (^)(NSArray *))complete error:(void (^)(NSString * str))error {
     
     byte* pData = (byte *)[flvdata bytes];
     TAG_HEADER tagheader;
@@ -379,6 +379,7 @@ uint reverse_bytes (byte *p ,int c) {
             }
             NSString *str = [NSString stringWithFormat:@"%.2f",double_number];
             [_AmfDict2 setValue:str forKey:key];
+            
             break;
         }
         case boolean:
@@ -533,6 +534,94 @@ uint reverse_bytes (byte *p ,int c) {
     return v.f;
 
 }
+
+//parse tag Specific Info
+- (NSDictionary *)parseFLVTagSpecificInfo:(NSData *)flvdata {
+    
+    NSMutableDictionary * dic = [[NSMutableDictionary alloc] init];
+    if ([flvdata length] != _flvTagHeaderBytes+1) {
+        return nil;
+    }
+    TAG_HEADER tagheader;
+    byte* pData =(byte *)[flvdata bytes];
+    memcpy(&tagheader, pData, _flvTagHeaderBytes);
+    
+    NSString *tagtype_str = [self parseTagType:tagheader.TagType];
+    if ([tagtype_str isEqualToString:@"UNKNOWN"]) {
+        return nil;
+    }
+    
+    int tagheader_datasize  = tagheader.DataSize[0]*65536 + tagheader.DataSize[1]*256 +tagheader.DataSize[2];
+    int tagheader_timestamp = tagheader.Timestamp[0]*65536 + tagheader.Timestamp[1]*256 + tagheader.Timestamp[2];
+    int tagheader_reservedID = tagheader.Reserved[0]*65536 + tagheader.Reserved[1]*256 +tagheader.Reserved[2];
+    
+    [dic setValue:tagtype_str             forKey:@"TagType"];
+    [dic setValue:@(tagheader_datasize)   forKey:@"DataSize"];
+    [dic setValue:@(tagheader_timestamp)  forKey:@"Timestamp"];
+    [dic setValue:@(tagheader_reservedID) forKey:@"StreamsID"];
+    
+    switch (tagheader.TagType) {
+        case TAG_TYPE_AUDIO: {
+            
+            //fecth first byte of the audio data
+            char tagdata_first_byte[1];
+            
+            memcpy(&tagdata_first_byte, pData+_flvTagHeaderBytes, 1);
+            //fecth 1~4 bits
+            int parseAudioCode = tagdata_first_byte[0] & 0xf0;
+            parseAudioCode = parseAudioCode >> 4;
+            NSString *audiotagformat = [self parseAudioFormat:parseAudioCode];
+            [dic setValue:audiotagformat forKey:@"AudioFormat"];
+            
+            //fecth 5~6 bits
+            parseAudioCode = tagdata_first_byte[0] & 0x0c;
+            parseAudioCode = parseAudioCode >>2;
+            NSString* audiokHz = [self parseAudiokHz:parseAudioCode];
+            [dic setValue:audiokHz forKey:@"AudiokHz"];
+            
+            //fecth 7 bit
+            parseAudioCode = tagdata_first_byte[0] & 0x02;
+            parseAudioCode = parseAudioCode >> 1;
+            NSString *audioBit = [self parseAudioBit:parseAudioCode];
+            [dic setValue:audioBit forKey:@"AudioBit"];
+            
+            //fecth 8 bit
+            parseAudioCode = tagdata_first_byte[0] & 0x01;
+            NSString* audioType = [self parseAudioType:parseAudioCode];
+            [dic setValue:audioType forKey:@"AudioType"];
+            break;
+        }
+        case TAG_TYPE_VIDEO: {
+            
+            //fecth first byte of the  video data
+            char tagdata_first_byte[1];
+            
+            memcpy(&tagdata_first_byte, pData+_flvTagHeaderBytes, 1);
+            
+            //fecth 1~4 bits
+            int parseVideoCode = tagdata_first_byte[0] & 0xF0;
+            parseVideoCode = parseVideoCode >> 4;
+            NSString * videoFrameType = [self parseVideoFrameType:parseVideoCode];
+            [dic setValue:videoFrameType forKey:@"videoFrameType"];
+            
+            //fecth 5~6 bits
+            parseVideoCode = tagdata_first_byte[0] & 0x0F;
+            NSString* parseVideoID = [self parseVideoCoderID:parseVideoCode];
+            [dic setValue:parseVideoID forKey:@"VideoCoderID"];
+            
+            break;
+        }
+        case TAG_TYPE_SCRIPT: {
+            break;
+        }
+        default:
+            break;
+    }
+
+    
+    return dic;
+}
+
 
 - (NSDictionary *)parseFLVAloneTag:(NSData *)data {
     

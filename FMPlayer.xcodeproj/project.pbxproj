@@ -27,6 +27,8 @@
 		3EC60A111C9120DF005E71A8 /* DWHTTPStreamSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EC60A051C9120DF005E71A8 /* DWHTTPStreamSessionManager.m */; };
 		BE485CC01C9FF39200433B75 /* ParseFLV.m in Sources */ = {isa = PBXBuildFile; fileRef = BE485CBF1C9FF39200433B75 /* ParseFLV.m */; };
 		BE485D0F1CA14B1300433B75 /* ParseFLVDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BE485D0E1CA14B1300433B75 /* ParseFLVDataModel.m */; };
+		BE485D131CA1A31200433B75 /* FMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE485D111CA1A31200433B75 /* FMTableViewCell.m */; };
+		BE485D141CA1A31200433B75 /* FMTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE485D121CA1A31200433B75 /* FMTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +71,9 @@
 		BE485CBF1C9FF39200433B75 /* ParseFLV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ParseFLV.m; path = ThirdLibs/AFNetworkingStreaming/ParseFLV.m; sourceTree = "<group>"; };
 		BE485D0D1CA14B1300433B75 /* ParseFLVDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParseFLVDataModel.h; sourceTree = "<group>"; };
 		BE485D0E1CA14B1300433B75 /* ParseFLVDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseFLVDataModel.m; sourceTree = "<group>"; };
+		BE485D101CA1A31200433B75 /* FMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTableViewCell.h; sourceTree = "<group>"; };
+		BE485D111CA1A31200433B75 /* FMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTableViewCell.m; sourceTree = "<group>"; };
+		BE485D121CA1A31200433B75 /* FMTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FMTableViewCell.xib; sourceTree = "<group>"; };
 		BE56CB9A1C98135400BA3269 /* test12.flv */ = {isa = PBXFileReference; lastKnownFileType = file; path = test12.flv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,6 +117,9 @@
 				BE485CBE1C9FF39200433B75 /* ParseFLV.h */,
 				BE485CBF1C9FF39200433B75 /* ParseFLV.m */,
 				3EC609DC1C912057005E71A8 /* Main.storyboard */,
+				BE485D101CA1A31200433B75 /* FMTableViewCell.h */,
+				BE485D111CA1A31200433B75 /* FMTableViewCell.m */,
+				BE485D121CA1A31200433B75 /* FMTableViewCell.xib */,
 				BE56CB9A1C98135400BA3269 /* test12.flv */,
 				3EC609DF1C912057005E71A8 /* Assets.xcassets */,
 				3EC609E11C912057005E71A8 /* LaunchScreen.storyboard */,
@@ -236,6 +244,7 @@
 			files = (
 				3EC609E31C912057005E71A8 /* LaunchScreen.storyboard in Resources */,
 				3EC609E01C912057005E71A8 /* Assets.xcassets in Resources */,
+				BE485D141CA1A31200433B75 /* FMTableViewCell.xib in Resources */,
 				3EC609DE1C912057005E71A8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,6 +270,7 @@
 				3EC60A081C9120DF005E71A8 /* AFHTTPSessionManager.m in Sources */,
 				3EC60A0C1C9120DF005E71A8 /* AFURLRequestSerialization.m in Sources */,
 				3EC60A0E1C9120DF005E71A8 /* AFURLSessionManager.m in Sources */,
+				BE485D131CA1A31200433B75 /* FMTableViewCell.m in Sources */,
 				3EC609D81C912057005E71A8 /* AppDelegate.m in Sources */,
 				3EC609D51C912057005E71A8 /* main.m in Sources */,
 				3EC60A0F1C9120DF005E71A8 /* DWDummyHTTPResponseSerializer.m in Sources */,
@@ -374,6 +384,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FMPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.com.fastweb.fastmedia.FMPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -385,6 +396,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = FMPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.com.fastweb.fastmedia.FMPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";

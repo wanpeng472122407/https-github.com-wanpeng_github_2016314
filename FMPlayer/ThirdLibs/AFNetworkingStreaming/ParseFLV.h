@@ -98,7 +98,7 @@ union av_intfloat64 {
 - (NSString *)parseVideoCoderID:(int)aCoder;
 
 
-// functiion: parseHeaderFLV:
+// functiion: parseHeaderFLVFile:
 // Gets the header information for the bendflv file
 // param:
 //      flvdata:Data for a local flv file
@@ -108,17 +108,17 @@ union av_intfloat64 {
 //key:Timestamp   express Timestamp
 //key:StreamsID   always 0
 
-- (NSDictionary *)parseHeaderFLV:(NSData *)flvdata;
+- (NSDictionary *)parseHeaderFLVFile:(NSData *)flvdata;
 
-// functiion:parseTagFLV:
+// functiion:parseTagFLVFile:
 // Gets the entire tag information for the local file
 // param:
 //      flvdata:Data for a local flv file
 // return: if successful Returns an array of tag information that contains the entire file otherwise            return nil
 
-- (NSArray *)parseTagFLV:(NSData *)flvdata;
+- (NSArray *)parseTagFLVFile:(NSData *)flvdata;
 
-//functiion:parseOnMetaData: complete: error:
+//functiion:parseFLVFileMetaData: complete: error:
 //Gets the script data for the local flv file
 //param:
 //      flvdata: Data for a local flv file
@@ -127,7 +127,10 @@ union av_intfloat64 {
 //note:If you want to know key videocodecid  Please call parseVideoCoderID:
 //     If you want to know key audiocodecid  Please call parseAudioFormat:
 
-- (void)parseOnMetaData:(NSData *)flvdata complete:(void (^)(NSArray *complete))complete error:(void (^)(NSString * strError))error;
+- (void)parseFLVFileMetaData:(NSData *)flvdata complete:(void (^)(NSArray *complete))complete error:(void (^)(NSString * strError))error;
+
+
+- (NSDictionary *)parseFLVTagSpecificInfo:(NSData *)flvdata;
 
 // functiion: parseFLVAloneTag: data;
 // param:
